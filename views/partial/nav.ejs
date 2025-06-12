@@ -1,0 +1,27 @@
+<nav class="navbar nav-tabs navbar-expand-sm navbar-dark bg-dark shadow">
+    <ul class="navbar-nav  navbar-collapse">
+        <li class="nav-item"><a class="nav-link 
+            <% if (title === 'Shop') { %>
+                active bg-dark
+            <%} %>"
+            " href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/">Redeems/Dicounts</a></li>
+        <li class="nav-item"><a class="nav-link" href="/">Coupons</a></li>
+        <li class="nav-item "><a class="nav-link" href="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        
+        <% if (isAuth) { %>
+            <% if (user.isAdmin) { %>
+                <li style="color:aliceblue">|</li>
+                <li class="nav-item"><a class="nav-link text-primary" href="/admin/manageProducts">Manage</a></li>
+            <% } %>
+        <li class="nav-item navbar-collapse justify-content-end">
+            
+        <span class="navbar-text text-secondery mr-3"><%= user.name %></span>
+            <a class="nav-link bg-info text-dark shadow rounded" href="/logout">Logout</a>
+        </li>
+        <% } else { %>
+        <li class="nav-item navbar-collapse justify-content-end"><a class="nav-link bg-info text-dark shadow rounded" href="/login">Login</a></li>
+        <% } %>
+    </ul>
+</nav>

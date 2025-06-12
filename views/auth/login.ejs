@@ -1,0 +1,116 @@
+<%- include('../partial/header.ejs') %> <%- include('../partial/nav.ejs') %>
+<div class="d-flex justify-content-center align-items-center">
+  <div id="form" class="w-75 w-md-50 w-lg-25 mt-5 mb-5">
+    <% if(invalid){%>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong><%= errorMessage %></strong> Please try again.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <% } %>
+    <!-- Login Form -->
+    <div id="login" class="collapse <%= form === 'login'? 'show' : '' %>" data-parent="#form">
+      <div class="d-flex justify-content-center align-items-center">
+        <div class="card md shadow w-50">
+          <div class="card-header bg-primary text-white">
+            <!-- Header -->
+            <h2 class="text-center">Login</h2>
+          </div>
+          <div class="card-body bg-grey">
+            <!-- Form Body -->
+            <form action="/login" method="POST" class="card-body">
+              <div class="mb-3">
+                <label for="username" class="form-label">username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  name="username"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary d-block mx-auto">
+                Login
+              </button>
+            </form>
+          </div>
+          <div class="card-footer text-center bg-secondery">
+            <!-- Footer -->
+            <p>
+              Don't have an account?
+              <a href="#register" data-toggle="collapse">Register Now</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Register Form -->
+    <div id="register" class="collapse <%= form === 'signup'? 'show' : '' %>" data-parent="#form">
+      <div class="d-flex justify-content-center align-items-center">
+        <div class="card md shadow w-50">
+          <div class="card-header bg-dark text-white">
+            <!-- Header -->
+            <h2 class="text-center">Create A New Account</h2>
+          </div>
+          <div class="card-body">
+            <!-- Form Body -->
+            <form action="/signup" method="POST" class="card-body">
+              <div class="mb-3">
+                <label for="name" class="form-label">name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="username" class="form-label">username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  name="username"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary d-block mx-auto">
+                Register
+              </button>
+            </form>
+          </div>
+          <div class="card-footer text-center">
+            <!-- Footer -->
+            <p>
+              Already have an Account?
+              <a href="#login" data-toggle="collapse">Login here</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../partial/footer.ejs') %>

@@ -1,0 +1,9 @@
+<%- include('../partial/header.ejs') %>
+<%- include('../partial/nav.ejs') %>
+    <h1>Welcome to the Shop </h1>
+    <% if(!isAuth) { %>
+        <div class="alert alert-info text-center continer-sm m-5 p-6 shadow rounded">
+            <a href="/login"> <p>Login to view products</p> </a>
+        </div>
+    <%}%>
+<%- include('../partial/footer.ejs') %>

@@ -1,0 +1,30 @@
+<div class="mt-5 mb-5">
+    <h1 class="text-center">Manage</h1>
+    <% if (user.access !== 'server_users') { %>
+    <div class="d-flex justify-content-around align-items-center">
+      <a href="/admin/addEditProduct" class="btn btn-primary <% if(title ==='Add Products' || title === 'Edit Product') { %>
+        bg-dark
+        <% } %>"
+        >Add Products</a
+      >
+    </div>
+    <br />
+    <div class="d-flex justify-content-around align-items-center">
+      <a href="/admin/manageProducts" class="btn btn-primary <% if(title ==='Manage Products') { %>
+        bg-dark
+        <% } %>"
+        >Products</a
+      >
+    </div>
+    <br />
+    <% } %>
+    <% if(user.access === 'server_owner' || user.access === 'server_users') { %>
+    <div class="d-flex justify-content-around align-items-center">
+      <a href="/admin/manageUsers" class="btn btn-primary <% if(title ==='Manage Users') { %>
+        bg-dark
+        <% } %>"
+        >users</a
+      >
+    </div>
+    <% } %>
+  </div>
