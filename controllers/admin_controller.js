@@ -13,8 +13,7 @@ exports.getManageProducts = (req, res) => {
       invalid: false,
       user: req.session.user,
     });
-  }
-  else{
+  } else {
     res.redirect("/admin/manageUsers");
   }
   // console.log("Inside controller.getlogin");
@@ -63,4 +62,42 @@ exports.getManageUsers = (req, res) => {
     // console.log("Inside controller.getlogin");
     // res.send("Login route is working");
   }
+};
+exports.postEditUser = (req, res) => {
+  if (!req.session.isAuth) {
+    return res.redirect("/shop/main");
+  }
+  const userId = req.body.userId;
+  const access = req.body.access;
+  User.findById(userId).then((quser) => {
+    if (!quser) {
+      req.flash("error", "User not found");
+      return res.redirect("/admin/manageUsers");
+    }
+    quser.access = access;
+    return quser.save();
+  }).catch((err) => {
+    console.error("Error updating user:", err);
+    req.flash("error", "Failed to update user");
+    return res.redirect("/admin/manageUsers");
+  }).then(() => {
+    req.flash("error", "User updated successfully");
+    return res.redirect("/admin/manageUsers");
+  });
+};
+exports.postDeleteUser = (req, res) => {
+  if (!req.session.isAuth) {
+    return res.redirect("/shop/main");
+  }
+  const userId = req.body.userId;
+  User.findByIdAndDelete(userId)
+    .then(() => {
+      req.flash("error", "User deleted successfully");
+      return res.redirect("/admin/manageUsers");
+    })
+    .catch((err) => {
+      console.error("Error deleting user:", err);
+      req.flash("error", "Failed to delete user");
+      return res.redirect("/admin/manageUsers");
+    });
 };
