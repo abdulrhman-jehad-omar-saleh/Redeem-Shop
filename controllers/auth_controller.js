@@ -29,12 +29,12 @@ exports.getlogout = (req, res) => {
   };
 
 exports.postLogin = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   User.find({ username: req.body.username, password: req.body.password }).then((user) => {
       if (user.length != 0) {
         req.session.isAuth = true;
         req.session.user = user[0];
-        console.log(user[0]);
+        // console.log(user[0]);
         if (user[0].access !== "user") {
           return res.redirect("/admin/manageProducts");
         }

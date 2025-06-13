@@ -164,6 +164,7 @@
               class="custom-file-input"
               id="customFile"
               accept="image/*"
+              name="productImage"
             />
             <label class="custom-file-label" for="customFile"
               >Choose Photo</label
@@ -179,6 +180,16 @@
                 label.textContent = fileName;
               });
           </script>
+          <label class="form-label">Codes</label>
+          <div class="mb-3">
+            <textarea
+              class="form-control"
+              id="codes"
+              name="codes"
+              rows="5"
+              placeholder="Enter codes separated by ( ; )"
+            ></textarea>
+          </div>
           <button type="submit" class="btn btn-primary d-block mx-auto">
             Register
           </button>

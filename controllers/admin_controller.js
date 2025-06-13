@@ -1,7 +1,8 @@
 const User = require("../models/users");
 const products = require("../models/products");
+const { register } = require("module");
 exports.getManageProducts = (req, res) => {
-  if (!req.session.isAuth) {
+  if (!req.session.user.isAdmin) {
     return res.redirect("/shop/main");
   }
   // console.log(req.session.user.access);
@@ -82,17 +83,22 @@ exports.postEditUser = (req, res) => {
   if (!req.session.isAuth) {
     return res.redirect("/shop/main");
   }
+  // console.log("Editing user:", req.body);
+  console.log("Access:", req.body.access.includes("provider")+"{"+req.body.access+"}");
   const userId = req.body.userId;
-  const access = req.body.access.includes("server")
-    ? req.body.access
-    : req.body.provider;
+  const isAdmin = req.body.access === "user" ? false : true;
+  const access = req.body.access.includes("provider") ? req.body.provider : req.body.access;
+  console.log("Result :"+isAdmin, access);
   User.findById(userId)
     .then((quser) => {
       if (!quser) {
         req.flash("error", "User not found");
         return res.redirect("/admin/manageUsers");
       }
+      // console.log("Updating user:", quser);
+      quser.isAdmin = isAdmin;
       quser.access = access;
+      // console.log("Updated user:", quser);
       return quser.save();
     })
     .catch((err) => {
