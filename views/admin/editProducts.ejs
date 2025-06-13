@@ -1,0 +1,216 @@
+<%- include('../partial/header.ejs') %> <%- include('../partial/nav.ejs') %>
+<div class="d-flex justify-content-around mb-3">
+  <%- include('../partial/managesubnav.ejs') %>
+  <div class="d-flex justify-content-center w-75 w-md-50 w-lg-50 mt-5 mb-5">
+    <div class="card md shadow w-75">
+      <div class="card-header bg-primary text-white">
+        <!-- Header -->
+        <h2 class="text-center">Add A New Product</h2>
+      </div>
+      <div class="card-body">
+        <!-- Form Body -->
+        <form action="" method="POST" class="card-body">
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="desc" class="form-label">Describtion</label>
+            <input
+              type="text"
+              class="form-control"
+              id="desc"
+              name="desc"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="provider" class="form-label">provider</label>
+            <input
+              type="text"
+              class="form-control"
+              id="provider"
+              name="provider"
+              required
+            />
+          </div>
+          <div class="mb-3 d-flex justify-content-around">
+            <div class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                id="redeemRadio"
+                name="redeemRadio"
+                value="redeem"
+                required
+              />
+              <label class="custom-control-label" for="redeemRadio"
+                >Redeem card</label
+              >
+            </div>
+            <div class="custom-control custom-radio">
+              <input
+                type="radio"
+                class="custom-control-input"
+                id="couponRadio"
+                name="redeemRadio"
+                value="coupon"
+              />
+              <label class="custom-control-label" for="couponRadio"
+                >Coupon card</label
+              >
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="price" class="form-label">price</label>
+            <input
+              type="number"
+              min="0.01"
+              class="form-control"
+              id="price"
+              name="price"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="startAt" class="form-label">Available At</label>
+            <input
+              type="datetime-local"
+              class="form-control"
+              id="startAt"
+              name="startAt"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="endAt" class="form-label">End At</label>
+            <input
+              type="datetime-local"
+              class="form-control"
+              id="endAt"
+              name="endAt"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <!-- category check boxes  -->
+            <label class="form-label">Category</label>
+            <div class="row">
+              <div class="col-lg col-md-6 col-sm-12">
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="App"
+                    name="category"
+                    value="App"
+                  />
+                  <label class="form-check-label" for="App">App</label>
+                </div>
+              </div>
+              <div class="col-lg col-md-6 col-sm-12">
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="Games"
+                    name="category"
+                    value="Games"
+                  />
+                  <label class="form-check-label" for="Games">Games</label>
+                </div>
+              </div>
+              <div class="col-lg col-md-6 col-sm-12">
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="Food"
+                    name="category"
+                    value="Food"
+                  />
+                  <label class="form-check-label" for="Food">Food</label>
+                </div>
+              </div>
+              <div class="col-lg col-md-6 col-sm-12">
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="Drink"
+                    name="category"
+                    value="Drink"
+                    required
+                  />
+                  <label class="form-check-label" for="Drink">Drink</label>
+                </div>
+              </div>
+              <div class="col-lg col-md-6 col-sm-12">
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="Others"
+                    name="category"
+                    value="Others"
+                  />
+                  <label class="form-check-label" for="Others">Others</label>
+                </div>
+              </div>
+            </div>
+            <!-- End of check boxe -->
+          </div>
+          <div class="mb-3 custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="customFile"
+              accept="image/*"
+              name="productImage"
+              required
+            />
+            <label class="custom-file-label" for="customFile"
+              >Choose Photo</label
+            >
+          </div>
+          <script>
+            // Update the label of the custom file input
+            document
+              .querySelector(".custom-file-input")
+              .addEventListener("change", function (e) {
+                const fileName = e.target.files[0].name;
+                const label = e.target.nextElementSibling;
+                label.textContent = fileName;
+              });
+          </script>
+          <label class="form-label">Codes</label>
+          <div class="mb-3">
+            <textarea
+              class="form-control"
+              id="codes"
+              name="codes"
+              rows="5"
+              placeholder="Enter codes separated by ( ; )"
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary d-block mx-auto">
+            Add Product
+          </button>
+        </form>
+      </div> <!-- End of Form Body -->
+      <div class="card-footer text-center">
+        <!-- Footer -->
+        <p>
+          Add a new product to the store
+        </p>
+      </div>
+    </div> <!-- End of Card -->
+  </div><!-- End of Form Container -->
+</div> <!-- End of Main Container -->
+<%- include('../partial/footer.ejs') %>

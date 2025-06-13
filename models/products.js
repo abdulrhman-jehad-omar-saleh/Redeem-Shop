@@ -14,16 +14,8 @@ const productSchema = new Schema({
     type: String,
     required: true,
   },
-  type: {
-    type: String,
-    required: true,
-  },
   code: {
     type: [String],
-  },
-  counter: {
-    type: Number,
-    default: 0,
   },
   price: {
     type: Number,
@@ -42,6 +34,10 @@ const productSchema = new Schema({
     required: true,
   },
   createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  startAt: {
     type: Date,
     default: Date.now,
   },

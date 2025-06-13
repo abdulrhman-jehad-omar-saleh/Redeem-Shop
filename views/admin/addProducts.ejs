@@ -49,6 +49,7 @@
                 id="redeemRadio"
                 name="redeemRadio"
                 value="redeem"
+                required
               />
               <label class="custom-control-label" for="redeemRadio"
                 >Redeem card</label
@@ -79,12 +80,12 @@
             />
           </div>
           <div class="mb-3">
-            <label for="createAt" class="form-label">Available At</label>
+            <label for="startAt" class="form-label">Available At</label>
             <input
               type="datetime-local"
               class="form-control"
-              id="createAt"
-              name="createAt"
+              id="startAt"
+              name="startAt"
             />
           </div>
           <div class="mb-3">
@@ -94,6 +95,7 @@
               class="form-control"
               id="endAt"
               name="endAt"
+              required
             />
           </div>
           <div class="mb-3">
@@ -106,6 +108,7 @@
                     class="form-check-input"
                     type="checkbox"
                     id="App"
+                    name="category"
                     value="App"
                   />
                   <label class="form-check-label" for="App">App</label>
@@ -117,6 +120,7 @@
                     class="form-check-input"
                     type="checkbox"
                     id="Games"
+                    name="category"
                     value="Games"
                   />
                   <label class="form-check-label" for="Games">Games</label>
@@ -128,6 +132,7 @@
                     class="form-check-input"
                     type="checkbox"
                     id="Food"
+                    name="category"
                     value="Food"
                   />
                   <label class="form-check-label" for="Food">Food</label>
@@ -139,7 +144,9 @@
                     class="form-check-input"
                     type="checkbox"
                     id="Drink"
+                    name="category"
                     value="Drink"
+                    required
                   />
                   <label class="form-check-label" for="Drink">Drink</label>
                 </div>
@@ -150,6 +157,7 @@
                     class="form-check-input"
                     type="checkbox"
                     id="Others"
+                    name="category"
                     value="Others"
                   />
                   <label class="form-check-label" for="Others">Others</label>
@@ -165,6 +173,7 @@
               id="customFile"
               accept="image/*"
               name="productImage"
+              required
             />
             <label class="custom-file-label" for="customFile"
               >Choose Photo</label
@@ -191,15 +200,14 @@
             ></textarea>
           </div>
           <button type="submit" class="btn btn-primary d-block mx-auto">
-            Register
+            Add Product
           </button>
         </form>
       </div> <!-- End of Form Body -->
       <div class="card-footer text-center">
         <!-- Footer -->
         <p>
-          Already have an Account?
-          <a href="#login" data-toggle="collapse">Login here</a>
+          Add a new product to the store
         </p>
       </div>
     </div> <!-- End of Card -->

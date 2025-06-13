@@ -3,7 +3,7 @@ const router = express.Router();
 const controller=require('../controllers/admin_controller');
 const multer = require('../middleware/multer');
 router.get('/admin/manageProducts', controller.getManageProducts);
-router.get('/admin/addEditProduct', controller.getAddEditProducts);
+router.get('/admin/addProduct', controller.getAddProducts);
 router.get('/admin/manageUsers', controller.getManageUsers);
 router.post('/admin/edituser', controller.postEditUser);
 router.post('/admin/deleteuser', controller.postDeleteUser);

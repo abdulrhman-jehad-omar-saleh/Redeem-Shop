@@ -1,5 +1,13 @@
 <%- include('../partial/header.ejs') %>
 <%- include('../partial/nav.ejs') %>
+<% if(errorMessage && errorMessage.length > 0) { %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong><%= errorMessage %></strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<% } %>
     <h1>Welcome to the Shop </h1>
     <% if(!isAuth) { %>
         <div class="alert alert-info text-center continer-sm m-5 p-6 shadow rounded">
