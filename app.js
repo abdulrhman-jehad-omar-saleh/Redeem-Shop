@@ -24,10 +24,12 @@ app.get('/test', (req, res) => {
 });
 const shopRouter = require('./routes/shop_router');
 const authRouter = require('./routes/auth_router');
-const AdminRouter = require('./routes/admin_router');
+const AdminProductRouter = require('./routes/admin/products_router');
+const AdminUserRouter = require('./routes/admin/users_router');
 // console.log("Routes are working!");
 app.use(shopRouter);
-app.use(AdminRouter);
+app.use(AdminProductRouter);
+app.use(AdminUserRouter);
 app.use(authRouter);
 // const adminRoutes=require('./routes/admin');
 // app.use('/admin',adminRoutes);
