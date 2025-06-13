@@ -1,26 +1,42 @@
 <%- include('../partial/header.ejs') %> <%- include('../partial/nav.ejs') %>
+<% if(errorMessage && errorMessage.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong><%= errorMessage %></strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% } %>
+<% if(successMessage && successMessage.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong><%= successMessage %></strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% } %>
 <div class="d-flex justify-content-around mb-3">
   <%- include('../partial/managesubnav.ejs') %>
   <div class="d-flex justify-content-center align-items-center w-75 w-md-50 w-lg-50 mt-5 mb-5 table-responsive">
-    <table class="table table-striped table-bordered table-dark">
-      <thead>
+    <table class="table table-striped table-boarderd table-dark w-80">
+      <thead class="">
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Role</th>
-          <th  colspan="2">Action</th>
+          <th scope="col" class="text-center">Name</th>
+          <th scope="col" class="text-center">Role</th>
+          <th  colspan="2" class="text-center">Action</th>
         </tr>
       </thead>
       <tbody>
       <% for (let quser of users) { %>
         <% if(quser._id != user._id && quser.access !== 'server_owner') { %>
         <tr>
-          <td><%= quser.name %></td>
+          <td style="font-size: medium;"><%= quser.name %></td>
           <td class="text-center">
-            <span class="badge p-2 <% if (quser.access !== 'user') { %>bg-success<%} else {%> bg-secondary <% } %>">
+            <span style="font-size: medium;" class="badge p-2 <% if(quser.access.includes('server')) { %>bg-success<%} else { if(quser.access === 'user'){%> bg-primary <% }else {%>bg-info<%} } %>">
             <%= quser.access %>
             </span>
           </td>
-          <td>
+          <td class="d-flex justify-content-end">
             <a class="btn btn-danger" data-toggle="modal" data-target="#delete<%= quser.id%>">Delete</a>
           </td>
           <!-- Delete Modal -->
@@ -48,8 +64,8 @@
             </div>
           </div>
           <!-- End of Modal -->
-          <td>
-            <a data-toggle="modal" data-target="#Role<%= quser.id%>" class="btn btn-primary">Edit Role</a>
+          <td class="text-white">            
+            <a data-toggle="modal" data-target="#Role<%= quser.id%>" class="btn btn-primary m-auto">Edit Role</a>
           </td>
           <!-- Edit Role Modal -->
            <div class="modal fade" id="Role<%= quser.id%>">
@@ -74,8 +90,10 @@
                         <option value="user" <% if(quser.access === 'user') { %>selected<% } %>>User</option>
                         <option value="server_users" <% if(quser.access === 'server_users') { %>selected<% } %> >Server User</option>
                         <option value="server_products" <% if(quser.access === 'server_products') { %>selected<% } %> >Server Products</option>
-                        <option value="server_owner" <% if(quser.access === 'server_owner') { %>selected<% } %> >Server Owner</option>
+                        <option value="provider" <% if(!quser.access.includes('server')) { %>selected<% } %> >Provider</option>
                       </select>
+                      <label for="provider" class="mt-2">Enter Provider name <span class="text-muted">only when choose Proivder</span></label>
+                      <input type="text" class="form-control mt-2" name="provider" placeholder="ex..Abu Hatem coffee shop" value="<%= quser.access %>">
                       <input type="submit" class="btn btn-primary mt-2" value="Edit Role">
                     </div>
                   </form>
@@ -91,7 +109,8 @@
         <% } %>
         <% } %>
       </tbody>
-      </table>
+    </table>
+    <br/>
   </div>
 </div>
 <%- include('../partial/footer.ejs') %>

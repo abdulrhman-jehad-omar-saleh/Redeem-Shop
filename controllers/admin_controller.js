@@ -6,13 +6,26 @@ exports.getManageProducts = (req, res) => {
   }
   // console.log(req.session.user.access);
   if (req.session.user.access !== "server_users") {
-    res.render("admin/products", {
-      title: "Manage Products",
-      errorMessage: req.flash("error"),
-      isAuth: req.session.isAuth,
-      invalid: false,
-      user: req.session.user,
-    });
+    const query = req.session.user.access.includes("server")
+      ? {}
+      : { provider: req.session.user.access };
+    products
+      .find(query)
+      .then((qproducts) => {
+        res.render("admin/products", {
+          title: "Manage Products",
+          errorMessage: req.flash("error"),
+          isAuth: req.session.isAuth,
+          invalid: false,
+          user: req.session.user,
+          products: qproducts,
+        });
+      })
+      .catch((err) => {
+        console.error("Error fetching products:", err);
+        req.flash("error", "Failed to fetch products");
+        res.redirect("/admin/manageProducts");
+      });
   } else {
     res.redirect("/admin/manageUsers");
   }
@@ -24,8 +37,9 @@ exports.getAddEditProducts = (req, res) => {
     return res.redirect("/shop/main");
   }
   res.render("admin/AddEditProducts", {
-    title: "Add Products",
+    title: "Manage Add Products",
     errorMessage: req.flash("error"),
+    successMessage: req.flash("success"),
     isAuth: req.session.isAuth,
     invalid: false,
     user: req.session.user,
@@ -46,6 +60,7 @@ exports.getManageUsers = (req, res) => {
         return res.render("admin/users", {
           title: "Manage Users",
           errorMessage: req.flash("error"),
+          successMessage: req.flash("success"),
           isAuth: req.session.isAuth,
           invalid: false,
           user: req.session.user,
@@ -68,22 +83,27 @@ exports.postEditUser = (req, res) => {
     return res.redirect("/shop/main");
   }
   const userId = req.body.userId;
-  const access = req.body.access;
-  User.findById(userId).then((quser) => {
-    if (!quser) {
-      req.flash("error", "User not found");
+  const access = req.body.access.includes("server")
+    ? req.body.access
+    : req.body.provider;
+  User.findById(userId)
+    .then((quser) => {
+      if (!quser) {
+        req.flash("error", "User not found");
+        return res.redirect("/admin/manageUsers");
+      }
+      quser.access = access;
+      return quser.save();
+    })
+    .catch((err) => {
+      console.error("Error updating user:", err);
+      req.flash("error", "Failed to update user");
       return res.redirect("/admin/manageUsers");
-    }
-    quser.access = access;
-    return quser.save();
-  }).catch((err) => {
-    console.error("Error updating user:", err);
-    req.flash("error", "Failed to update user");
-    return res.redirect("/admin/manageUsers");
-  }).then(() => {
-    req.flash("error", "User updated successfully");
-    return res.redirect("/admin/manageUsers");
-  });
+    })
+    .then(() => {
+      req.flash("success", "User updated successfully");
+      return res.redirect("/admin/manageUsers");
+    });
 };
 exports.postDeleteUser = (req, res) => {
   if (!req.session.isAuth) {
@@ -92,7 +112,7 @@ exports.postDeleteUser = (req, res) => {
   const userId = req.body.userId;
   User.findByIdAndDelete(userId)
     .then(() => {
-      req.flash("error", "User deleted successfully");
+      req.flash("success", "User deleted successfully");
       return res.redirect("/admin/manageUsers");
     })
     .catch((err) => {

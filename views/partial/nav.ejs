@@ -2,7 +2,7 @@
     <ul class="navbar-nav  navbar-collapse">
         <li class="nav-item"><a class="nav-link 
             <% if (title === 'Shop') { %>
-                active bg-dark
+                border-bottom text-white bg-dark
             <%} %>"
             " href="/">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/">Redeems/Dicounts</a></li>
@@ -13,7 +13,7 @@
         <% if (isAuth) { %>
             <% if (user.isAdmin) { %>
                 <li style="color:aliceblue">|</li>
-                <li class="nav-item"><a class="nav-link text-primary" href="/admin/manageProducts">Manage</a></li>
+                <li class="nav-item"><a class="nav-link text-primary <% if(title.includes('Manage')) {%> border-bottom bg-dark <%}%>" href="/admin/manageProducts">Manage</a></li>
             <% } %>
         <li class="nav-item navbar-collapse justify-content-end">
             
