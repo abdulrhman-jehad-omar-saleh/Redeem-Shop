@@ -11,7 +11,6 @@ else{
         provider:req.body.provider,
         codes:req.body.codes,
         category:req.body.category,
-        productImage:req.body.productImage,
         endAt:req.body.endAt,
         startAt:req.body.startAt,
         redeemRadio:req.body.redeemRadio,

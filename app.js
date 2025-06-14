@@ -12,6 +12,7 @@ const bodyParser=require('body-parser');
 const path = require("path");
 const connectflash=require("connect-flash");  
 app.use(bodyParser.urlencoded({extended:false}));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret:'202411481',

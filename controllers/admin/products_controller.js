@@ -14,6 +14,7 @@ exports.getManageProducts = (req, res) => {
         res.render("admin/products", {
           title: "Manage Products",
           errorMessage: req.flash("error"),
+          successMessage: req.flash("success"),
           isAuth: req.session.isAuth,
           invalid: false,
           user: req.session.user,
@@ -52,7 +53,7 @@ exports.getEditProducts = (req, res) => {
     req.flash("error", "You do not have permission");
     return res.redirect("/shop/main");
   }
-  const productId = req.body.productId;
+  const productId = req.params.productId;
   products
     .findById(productId)
     .then((product) => {
@@ -79,9 +80,47 @@ exports.getEditProducts = (req, res) => {
 
 // PRODUCT MANAGEMENT pOST
 exports.postAddProducts = (req, res) => {
-  if (!req.session.user.isAdmin) {
+  if (!req.session.isAuth) {
     return res.redirect("/shop/main");
   }
+  const {
+    title,
+    price,
+    desc,
+    provider,
+    codes,
+    category,
+    endAt,
+    startAt,
+    redeemRadio,
+  } = req.body;
+  let code=codes.split(";").map((code) => code.trim());
+    const newProduct = new products({
+    title,
+    price,
+    desc,
+    provider,
+    code,
+    category,
+    endAt,
+    startAt,
+    redeemRadio,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    });
+    newProduct
+    .save()
+    .then((product) =>
+        {
+            req.flash("success", "Product added successfully");
+            return res.redirect("/admin/manageProducts");
+        }
+    )
+    .catch((err) => {
+      console.error("Error adding product:", err);
+      req.flash("error", "Failed to add product");
+      return res.redirect("/admin/manageProducts");
+    });
 };
 exports.postEditProducts = (req, res) => {
   if (!req.session.isAuth) {
@@ -101,16 +140,16 @@ exports.postEditProducts = (req, res) => {
       product.provider = req.body.provider;
       product.codes = req.body.codes;
       product.category = req.body.category;
-      product.productImage = req.file ? req.file.path : product.productImage;
       product.endAt = req.body.endAt;
+      product.code = req.body.codes.split(";").map((code) => code.trim());
       product.startAt = req.body.startAt;
       product.redeemRadio = req.body.redeemRadio;
       product.updatedAt = Date.now();
-      return product.save();
-    })
-    .then(() => {
+      return product.save()
+      .then(() => {
       req.flash("success", "Product updated successfully");
       return res.redirect("/admin/manageProducts");
+    })
     })
     .catch((err) => {
       console.error("Error updating product:", err);
@@ -118,3 +157,24 @@ exports.postEditProducts = (req, res) => {
       return res.redirect("/admin/manageProducts");
     });
 };
+
+exports.postDeleteProducts = (req, res) => {
+  if (!req.session.isAuth) {
+    return res.redirect("/shop/main");
+  } 
+  const productId = req.body.productId;
+  products
+    .findByIdAndDelete(productId)
+    .then(() => {
+      req.flash("success", "Product deleted successfully");
+      return res.redirect("/admin/manageProducts");
+    }
+    )
+    .catch((err) =>
+      {
+        console.error("Error deleting product:", err);
+        req.flash("error", "Failed to delete product");
+        return res.redirect("/admin/manageProducts");
+      } 
+    );
+} ;//end postDeleteProducts

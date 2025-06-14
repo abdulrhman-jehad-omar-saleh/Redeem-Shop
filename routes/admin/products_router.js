@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const controller=require('../../controllers/admin/products_controller');
-const multer = require('../../middleware/multer');
+const validate_product = require('../../validators/productsvalid').productValidationRules;
+const validateReq = require('../../validators/validatereq');
 router.get('/admin/manageProducts', controller.getManageProducts);
 router.get('/admin/addProduct', controller.getAddProducts);
+router.post('/admin/addProduct', validate_product.add,validateReq.validate_product, controller.postAddProducts);
+router.get('/admin/editProduct/:productId', controller.getEditProducts);
+router.post('/admin/editProduct/:productId', controller.postEditProducts);
+router.post('/admin/deleteProduct', controller.postDeleteProducts);
 module.exports = router;

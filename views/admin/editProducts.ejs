@@ -5,11 +5,12 @@
     <div class="card md shadow w-75">
       <div class="card-header bg-primary text-white">
         <!-- Header -->
-        <h2 class="text-center">Add A New Product</h2>
+        <h2 class="text-center">Edit Product</h2>
       </div>
       <div class="card-body">
         <!-- Form Body -->
         <form action="" method="POST" class="card-body">
+          <input type="hidden" name="productId" value="<%= product._id %>" />
           <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input
@@ -17,6 +18,7 @@
               class="form-control"
               id="title"
               name="title"
+              value="<%= product.title %>"
               required
             />
           </div>
@@ -27,6 +29,7 @@
               class="form-control"
               id="desc"
               name="desc"
+              value="<%= product.desc %>"
               required
             />
           </div>
@@ -38,6 +41,7 @@
               class="form-control"
               id="provider"
               name="provider"
+              value="<%= product.provider %>"
               required
             />
           </div>
@@ -49,6 +53,7 @@
                 id="redeemRadio"
                 name="redeemRadio"
                 value="redeem"
+                <% if (product.type === 'redeem') { %>checked<% } %>
                 required
               />
               <label class="custom-control-label" for="redeemRadio"
@@ -62,6 +67,7 @@
                 id="couponRadio"
                 name="redeemRadio"
                 value="coupon"
+                <% if (product.type === 'coupon') { %>checked<% } %>
               />
               <label class="custom-control-label" for="couponRadio"
                 >Coupon card</label
@@ -72,10 +78,11 @@
             <label for="price" class="form-label">price</label>
             <input
               type="number"
-              min="0.01"
               class="form-control"
               id="price"
               name="price"
+              value="<%= product.price %>"
+              step="0.01"
               required
             />
           </div>
@@ -86,6 +93,7 @@
               class="form-control"
               id="startAt"
               name="startAt"
+              value="<%= product.startAt ? new Date(product.startAt).toISOString().slice(0, 16) : '' %>"
             />
           </div>
           <div class="mb-3">
@@ -95,6 +103,7 @@
               class="form-control"
               id="endAt"
               name="endAt"
+              value="<%= product.endAt ? new Date(product.endAt).toISOString().slice(0, 16) : '' %>"
               required
             />
           </div>
@@ -109,6 +118,7 @@
                     type="checkbox"
                     id="App"
                     name="category"
+                    <% if (product.category.includes('App')) { %>checked<% } %>
                     value="App"
                   />
                   <label class="form-check-label" for="App">App</label>
@@ -121,6 +131,7 @@
                     type="checkbox"
                     id="Games"
                     name="category"
+                    <% if (product.category.includes('Games')) { %>checked<% } %>
                     value="Games"
                   />
                   <label class="form-check-label" for="Games">Games</label>
@@ -133,6 +144,7 @@
                     type="checkbox"
                     id="Food"
                     name="category"
+                    <% if (product.category.includes('Food')) { %>checked<% } %>
                     value="Food"
                   />
                   <label class="form-check-label" for="Food">Food</label>
@@ -145,8 +157,8 @@
                     type="checkbox"
                     id="Drink"
                     name="category"
+                    <% if (product.category.includes('Drink')) { %>checked<% } %>
                     value="Drink"
-                    required
                   />
                   <label class="form-check-label" for="Drink">Drink</label>
                 </div>
@@ -158,6 +170,7 @@
                     type="checkbox"
                     id="Others"
                     name="category"
+                    <% if (product.category.includes('Others')) { %>checked<% } %>
                     value="Others"
                   />
                   <label class="form-check-label" for="Others">Others</label>
@@ -166,29 +179,6 @@
             </div>
             <!-- End of check boxe -->
           </div>
-          <div class="mb-3 custom-file">
-            <input
-              type="file"
-              class="custom-file-input"
-              id="customFile"
-              accept="image/*"
-              name="productImage"
-              required
-            />
-            <label class="custom-file-label" for="customFile"
-              >Choose Photo</label
-            >
-          </div>
-          <script>
-            // Update the label of the custom file input
-            document
-              .querySelector(".custom-file-input")
-              .addEventListener("change", function (e) {
-                const fileName = e.target.files[0].name;
-                const label = e.target.nextElementSibling;
-                label.textContent = fileName;
-              });
-          </script>
           <label class="form-label">Codes</label>
           <div class="mb-3">
             <textarea
@@ -197,20 +187,22 @@
               name="codes"
               rows="5"
               placeholder="Enter codes separated by ( ; )"
-            ></textarea>
+            ><%= product.code ? product.code.join(';') : '' %></textarea>
           </div>
           <button type="submit" class="btn btn-primary d-block mx-auto">
-            Add Product
+            Edit Product
           </button>
         </form>
-      </div> <!-- End of Form Body -->
+      </div>
+      <!-- End of Form Body -->
       <div class="card-footer text-center">
         <!-- Footer -->
-        <p>
-          Add a new product to the store
-        </p>
+        <p>Add a new product to the store</p>
       </div>
-    </div> <!-- End of Card -->
-  </div><!-- End of Form Container -->
-</div> <!-- End of Main Container -->
+    </div>
+    <!-- End of Card -->
+  </div>
+  <!-- End of Form Container -->
+</div>
+<!-- End of Main Container -->
 <%- include('../partial/footer.ejs') %>

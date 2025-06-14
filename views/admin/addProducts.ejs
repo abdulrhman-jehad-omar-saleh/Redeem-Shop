@@ -9,7 +9,7 @@
       </div>
       <div class="card-body">
         <!-- Form Body -->
-        <form action="" method="POST" class="card-body">
+        <form action="/admin/addProduct" method="POST" class="card-body">
           <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input
@@ -166,29 +166,6 @@
             </div>
             <!-- End of check boxe -->
           </div>
-          <div class="mb-3 custom-file">
-            <input
-              type="file"
-              class="custom-file-input"
-              id="customFile"
-              accept="image/*"
-              name="productImage"
-              required
-            />
-            <label class="custom-file-label" for="customFile"
-              >Choose Photo</label
-            >
-          </div>
-          <script>
-            // Update the label of the custom file input
-            document
-              .querySelector(".custom-file-input")
-              .addEventListener("change", function (e) {
-                const fileName = e.target.files[0].name;
-                const label = e.target.nextElementSibling;
-                label.textContent = fileName;
-              });
-          </script>
           <label class="form-label">Codes</label>
           <div class="mb-3">
             <textarea

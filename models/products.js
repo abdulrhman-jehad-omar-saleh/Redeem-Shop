@@ -25,13 +25,14 @@ const productSchema = new Schema({
     type: Number,
     default: null,
   },
-  image: {
-    type: String,
-    required: true,
-  },
   category: {
     type: [String],
     required: true,
+  },
+  type:{
+    type: String,
+    enum: ["redeem", "coupon"],
+    default: "redeem",
   },
   createdAt: {
     type: Date,
