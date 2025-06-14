@@ -14,6 +14,11 @@
                 border-bottom text-white bg-dark
             <%} %>"" href="/shop/coupon">Coupons</a></li>        
         <% if (isAuth) { %>
+        <li class="nav-item"><a class="nav-link" href="/shop/cart"> Cart
+            <% if (user.cart.length > 0) { %>
+                <span class="badge badge-pill badge-danger ml-1"><%= cartCount %></span>
+            <% } %>
+        </a></li>
             <% if (user.isAdmin) { %>
                 <li style="color:aliceblue">|</li>
                 <li class="nav-item"><a class="nav-link text-primary <% if(title.includes('Manage')) {%> border-bottom bg-dark <%}%>" href="/admin/manageProducts">Manage</a></li>

@@ -5,4 +5,5 @@ router.get('/', controller.getIndex);
 router.get('/shop/main', controller.getShop);
 router.get('/shop/redeem', controller.getRedeem);
 router.get('/shop/coupon', controller.getCoupon);
+router.get('/shop/cart', controller.getCart);
 module.exports = router;

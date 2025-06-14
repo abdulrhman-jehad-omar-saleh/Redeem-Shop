@@ -41,3 +41,18 @@ exports.getCoupon = (req, res) => {
       });
     })
 };
+exports.getCart = (req, res) => {
+  if (!req.session.isAuth) {
+    req.flash("error", "You must be logged in to view your cart.");
+    return res.redirect("/shop/main");
+  }
+  const user = req.session.user;
+  res.render("shop/cart", {
+    title: "Cart",
+    isAuth: req.session.isAuth,
+    user: user,
+    cart: user.cart,
+    errorMessage: req.flash("error"),
+    successMessage: req.flash("success"),
+  });
+}
