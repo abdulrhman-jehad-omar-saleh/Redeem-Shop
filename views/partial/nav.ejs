@@ -5,11 +5,14 @@
                 border-bottom text-white bg-dark
             <%} %>"
             " href="/">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/">Redeems/Dicounts</a></li>
-        <li class="nav-item"><a class="nav-link" href="/">Coupons</a></li>
-        <li class="nav-item "><a class="nav-link" href="/about">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
-        
+        <li class="nav-item"><a class="nav-link 
+            <% if (title === 'Redeems') { %>
+                border-bottom text-white bg-dark
+            <%} %>"" href="/shop/redeem">Redeems/Dicounts</a></li>
+        <li class="nav-item"><a class="nav-link
+            <% if (title === 'Coupons') { %>
+                border-bottom text-white bg-dark
+            <%} %>"" href="/shop/coupon">Coupons</a></li>        
         <% if (isAuth) { %>
             <% if (user.isAdmin) { %>
                 <li style="color:aliceblue">|</li>

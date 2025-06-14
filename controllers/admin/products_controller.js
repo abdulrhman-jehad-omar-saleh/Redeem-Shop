@@ -143,7 +143,7 @@ exports.postEditProducts = (req, res) => {
       product.endAt = req.body.endAt;
       product.code = req.body.codes.split(";").map((code) => code.trim());
       product.startAt = req.body.startAt;
-      product.redeemRadio = req.body.redeemRadio;
+      product.type = req.body.redeemRadio;
       product.updatedAt = Date.now();
       return product.save()
       .then(() => {

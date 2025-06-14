@@ -1,17 +1,58 @@
-<%- include('../partial/header.ejs') %>
-<%- include('../partial/nav.ejs') %>
-<% if(errorMessage && errorMessage.length > 0) { %>
+<%- include('../partial/header.ejs') %> <%- include('../partial/nav.ejs') %> <%
+if(errorMessage && errorMessage.length > 0) { %>
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong><%= errorMessage %></strong>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
+  <strong><%= errorMessage %></strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
 <% } %>
-    <h1>Welcome to the Shop </h1>
-    <% if(!isAuth) { %>
-        <div class="alert alert-info text-center continer-sm m-5 p-6 shadow rounded">
-            <a href="/login"> <p>Login to view products</p> </a>
-        </div>
-    <%}%>
+<div class="card-columns w-75 w-md-50 w-lg-50 m-auto">
+  <% if(products.length === 0) { %>
+  <div class="alert alert-info text-center" role="alert">
+    No products available.
+  </div>
+  <% } else { %> <% for(let product of products) { %>
+  <div class="card shadow m-3 alert-info">
+    <div class="card-header">
+      <details>
+        <summary><%= product.title %></summary>
+        <hr />
+        <p class="card-text"><%= product.desc %></p>
+      </details>
+    </div>
+    <div class="card-body">
+      <p class="card-text text-muted">
+        <strong>by</strong> <%= product.provider %>
+      </p>
+      <% for(let category of product.category) { %>
+        <span class="badge bg-secondary text-white"><%= category %></span>
+        <% } %>
+      <% if(product.type === 'redeem') { %>
+      <p class="card-text">
+        <strong>JOD </strong
+        ><span class="badge bg-success"><%= product.price %></span>
+      </p>
+      <% } else { %>
+      <p class="card-text">
+        <strong>claim before: </strong
+        ><span class="badge bg-success"
+          ><%= product.endAt.toLocaleString() %></span
+        >
+      </p>
+      <% } %>
+    </div>
+    <div class="card-footer text-muted">
+      <% if(!isAuth) { %>
+        <a href="/login" class=" alert-danger text-center"> <p>Login to Acclaim</p> </a>
+      <%} else {%>
+      <a href="/shop/product/<%= product._id %>" class="btn btn-primary"
+        >View Product</a
+      >
+      <% } %>
+    </div>
+  </div>
+  <% } %> <% } %>
+</div>
+
 <%- include('../partial/footer.ejs') %>
