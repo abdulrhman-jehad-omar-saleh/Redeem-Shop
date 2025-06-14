@@ -23,6 +23,6 @@ else{
     req.flash('errors',{old_data:old_data,
         error_messages:error_messages
     });
-    res.redirect("/admin/AddEditProduct");
+    res.redirect("/admin/AddProduct");
 }
 };

@@ -46,8 +46,17 @@ if(errorMessage && errorMessage.length > 0) { %>
       <% if(!isAuth) { %>
         <a href="/login" class=" alert-danger text-center"> <p>Login to Acclaim</p> </a>
       <%} else {%>
-      <a href="/shop/product/<%= product._id %>" class="btn btn-primary"
-        >View Product</a
+      <a href="/shop/add-cart/<%= product._id %>" class="btn btn-primary"
+        >Add to cart</a
+      >
+      <a href="/shop/buy-now/<%= product._id %>" class="btn btn-primary"
+        >
+        <% if(product.type === 'coupon') { %>
+          claim Now
+        <% } else { %>
+          Buy Now
+        <% } %>
+        </a
       >
       <% } %>
     </div>

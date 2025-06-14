@@ -1,0 +1,46 @@
+<%- include('../partial/header.ejs') %> <%- include('../partial/nav.ejs') %> 
+<%- include('../partial/cartOrdersSubnav.ejs') %>
+<%if(errorMessage && errorMessage.length > 0) { %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong><%= errorMessage %></strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %>
+<% if (orders.length === 0) { %>
+  <p>You haven't placed any orders yet. <a href="/shop/main">Start shopping!</a></p>
+<% } else { %>
+  <div class="card-columns w-75 w-md-50 w-lg-50 m-auto">
+    <% orders.forEach(order => { %>
+      <div class="card shadow m-3 alert-info">
+        <div class="card-header">
+          <details>
+            <summary class="text-dark"><%= order.productId.title%></summary>
+            <hr />
+            <p class="card-text"><%= order.productId.desc %></p>
+          </details>
+        </div>
+        <div class="card-body">
+          <details>
+            <summary>Order Details</summary>
+            <hr />
+            <p><strong>Order ID: </strong> <%= order._id %></p>
+            <p><strong>Order Date: </strong> <%= order.orderDate.toLocaleString() %></p>
+            <p><strong>Product Price: </strong><%= order.productPrice %></p>
+            <p><strong>Total : </strong><%= order.totalPrice %></p>
+          </details>
+        </div>
+        <div class="card-footer">
+          <details>
+            <summary>Code</summary>
+            <p class="alert-muted"> <%= order.code %></p>
+          </details>
+        </div>
+      </div>
+        <!-- Product Information -->
+    <% }) %>
+  </div>
+<% } %>
+
+<%- include('../partial/footer.ejs') %>

@@ -15,10 +15,18 @@ const OrderSchema = new Schema({
     type: Number,
     required: true,
   },
+  totalPrice:{
+    type: Number,
+    required: true,
+  },
+  code:{
+    type: String,
+    required: true,
+  },
   orderDate: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = mongoose.model("orders", OrderSchema);
+module.exports = moongoose.model("orders", OrderSchema);

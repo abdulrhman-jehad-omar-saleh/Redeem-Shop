@@ -1,4 +1,12 @@
 <%- include('../partial/header.ejs') %> <%- include('../partial/nav.ejs') %>
+<% if (errorMessage && errorMessage.length > 0) { %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong><%= errorMessage %></strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %>
 <div class="d-flex justify-content-around mb-3">
   <%- include('../partial/managesubnav.ejs') %>
   <div class="d-flex justify-content-center w-75 w-md-50 w-lg-50 mt-5 mb-5">
@@ -72,7 +80,7 @@
             <label for="price" class="form-label">price</label>
             <input
               type="number"
-              min="0.01"
+              step="0.01"
               class="form-control"
               id="price"
               name="price"

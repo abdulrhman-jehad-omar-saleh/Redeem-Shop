@@ -14,9 +14,13 @@
                 border-bottom text-white bg-dark
             <%} %>"" href="/shop/coupon">Coupons</a></li>        
         <% if (isAuth) { %>
-        <li class="nav-item"><a class="nav-link" href="/shop/cart"> Cart
+        <li class="nav-item"><a class="nav-link
+            <% if (title === 'Cart' || title === 'Orders') { %>
+                border-bottom text-white bg-dark
+            <%} %>"
+            " href="/shop/cart"> Cart
             <% if (user.cart.length > 0) { %>
-                <span class="badge badge-pill badge-danger ml-1"><%= cartCount %></span>
+                <span class="badge badge-pill badge-danger ml-1"><%= user.cart.length %></span>
             <% } %>
         </a></li>
             <% if (user.isAdmin) { %>

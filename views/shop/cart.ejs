@@ -15,7 +15,7 @@ if(errorMessage && errorMessage.length > 0) { %>
 </div>
 <% } %> <%- include('../partial/cartOrdersSubNav.ejs') %>
 <table class="table table-striped d-table w-80 justify-content-center mx-auto">
-  <thead>
+  <thead class="bg-info text-white">
     <tr>
       <th>Product Name</th>
       <th>Price</th>
@@ -23,32 +23,39 @@ if(errorMessage && errorMessage.length > 0) { %>
     </tr>
   </thead>
   <% if (cart && cart.length > 0) { %>
-  <tbody>
+  <tbody class="alert-info">
     <% let totalPrice = 0; %> <% cart.forEach(item => { %>
     <tr>
-      <td><%= item.product.title %></td>
-      <td>$<%= item.product.price.toFixed(2) %></td>
-      <% totalPrice += item.product.price; %>
+      <td><%= item.title %></td>
       <td>
-        <form action="/cart/remove/<%= item._id %>" method="POST">
+        <% if(item.type === 'redeem') { %>
+        <%= item.price.toFixed(2) %> JOD
+        <% } else { %>
+          <span class="badge bg-muted">Coupon</span>
+        <% } %>
+      </td>
+        
+      <% totalPrice += item.price; %>
+      <td>
+        <form action="/shop/cart/remove/<%= item._id %>" method="POST">
           <button type="submit" class="btn btn-danger">Remove</button>
         </form>
       </td>
     </tr>
     <% }) %>
   </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="2" class="text-right">Items :</td>
-      <td><%= cart ? cart.length : 0 %></td>
+  <tfoot >
+    <tr class="alert-success text-dark">
+      <td  class="text-right text-center ">Items :</td>
+      <td colspan="2" class="text-left"><%= cart ? cart.length : 0 %></td>
     </tr>
-    <tr>
-      <td colspan="2" class="text-right">Total:</td>
-      <td>$<%= totalPrice %></td>
+    <tr class="alert-success text-dark">
+      <td  class="text-right text-center">Total:</td>
+      <td colspan="2" class="text-left">$<%= totalPrice %></td>
     </tr>
     <tr>
       <td colspan="3" class="text-center">
-        <form action="/cart/checkout" method="POST">
+        <form action="/shop/cart/checkout" method="POST">
           <input type="hidden" name="totalPrice" value="<%= totalPrice %>">
           <button type="submit" class="btn btn-success">Checkout</button>
         </form>
@@ -56,7 +63,7 @@ if(errorMessage && errorMessage.length > 0) { %>
     </tr>
   </tfoot>
   <% } else { %>
-  <tr>
+  <tr class="alert-info">
     <td colspan="3" class="text-center">Your cart is empty.</td>
   </tr>
   <% } %>
