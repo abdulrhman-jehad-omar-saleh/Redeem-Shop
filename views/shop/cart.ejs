@@ -22,9 +22,10 @@ if(errorMessage && errorMessage.length > 0) { %>
       <th>Action</th>
     </tr>
   </thead>
+  <% let totalPrice = 0; %>
   <% if (cart && cart.length > 0) { %>
   <tbody class="alert-info">
-    <% let totalPrice = 0; %> <% cart.forEach(item => { %>
+    <% cart.forEach(item => { %>
     <tr>
       <td><%= item.title %></td>
       <td>
@@ -55,9 +56,12 @@ if(errorMessage && errorMessage.length > 0) { %>
     </tr>
     <tr>
       <td colspan="3" class="text-center">
-        <form action="/shop/cart/checkout" method="POST">
-          <input type="hidden" name="totalPrice" value="<%= totalPrice %>">
-          <button type="submit" class="btn btn-success">Checkout</button>
+          <button type="submit" class="btn btn-success" onclick="showPaymentForm()">Checkout</button>
+          <script>
+            function showPaymentForm() {
+            document.getElementById('paymentForm').hidden = false;
+            }
+          </script>
         </form>
       </td>
     </tr>
@@ -68,5 +72,19 @@ if(errorMessage && errorMessage.length > 0) { %>
   </tr>
   <% } %>
 </table>
+<div class="container mt-5 w-50" hidden="true" id="paymentForm">
+  <form action="/shop/cart/checkout" method="POST">
+    <input type="hidden" name="totalPrice" value="<%= totalPrice %>">
+    <label for="cardnumber">Card Number:</label>
+    <input type="text" id="cardnumber" name="cardnumber" class="form-control" placeholder="Enter card number" required><br>
+    <label for="expirydate">Expiry Date:</label>
+    <input type="text" id="expirydate" name="expirydate" class="form-control" placeholder="MM/YY" required><br>
+    <label for="cvv">CVV:</label>
+    <input type="text" id="cvv" name="cvv" class="form-control" placeholder="Enter CVV" required><br>
+    <div class="justify-content-center text-center m-3">
+    <button type="submit" class="btn btn-primary">Pay Now</button>
+    </div>
+  </form>
+</div>
 
 <%- include('../partial/footer.ejs') %>
