@@ -94,6 +94,7 @@ exports.postAddProducts = (req, res) => {
     startAt,
     redeemRadio,
   } = req.body;
+  console.log("End At:", endAt);
   let code=codes.split(";").map((code) => code.trim());
     const newProduct = new products({
     title,

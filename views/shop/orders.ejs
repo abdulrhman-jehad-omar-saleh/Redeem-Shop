@@ -13,6 +13,7 @@
 <% } else { %>
   <div class="card-columns w-75 w-md-50 w-lg-50 m-auto">
     <% orders.forEach(order => { %>
+      <% if (order.productId !== null) { %>
       <div class="card shadow m-3 alert-info">
         <div class="card-header">
           <details>
@@ -39,6 +40,7 @@
         </div>
       </div>
         <!-- Product Information -->
+         <%}%>
     <% }) %>
   </div>
 <% } %>

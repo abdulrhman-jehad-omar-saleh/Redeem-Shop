@@ -155,6 +155,9 @@ exports.postCheckout = async (req, res) => {
       
       // Remove one code from product
       const code = product.code.pop();
+      if(product.code.length === 0) {
+        product.code = []; // Ensure code is an empty array if no codes left
+      }
       await product.save();
       
       // Create order
