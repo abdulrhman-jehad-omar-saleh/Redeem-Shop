@@ -118,7 +118,11 @@ exports.postCheckout = async (req, res) => {
       req.flash("error", "You must be logged in to checkout.");
       return res.redirect("/shop/main");
     }
-    
+    String.prototype.isNumber = function(){return /^\d+$/.test(this);}
+    if(!req.body.cardnumber.isNumber() || req.body.cardnumber.length < 16 || !req.body.expiredate.includes('/')){
+      req.flash("error","Invalid Card Number");
+      return res.redirect("/shop/cart");
+    }
     const userId = req.session.user._id;
     
     const foundUser = await User.findById(userId);

@@ -30,6 +30,20 @@ const UserSchema = new Schema({
     ],
     default: [],
   },
+  payment: {
+    type:{
+      card_no:{
+        type:String
+      },
+      expiry_date:{
+        type:String
+      },
+      cvv:{
+        type:String
+      }
+    }
+  }
+  ,
   createdAt: {
     type: Date,
     default: Date.now,

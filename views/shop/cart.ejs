@@ -72,6 +72,8 @@ if(errorMessage && errorMessage.length > 0) { %>
   </tr>
   <% } %>
 </table>
+
+<!-- CARD PAYMENT FORM -->
 <div class="container mt-5 w-50" hidden="true" id="paymentForm">
   <form action="/shop/cart/checkout" method="POST">
     <input type="hidden" name="totalPrice" value="<%= totalPrice %>">
@@ -81,10 +83,12 @@ if(errorMessage && errorMessage.length > 0) { %>
     <input type="text" id="expirydate" name="expirydate" class="form-control" placeholder="MM/YY" required><br>
     <label for="cvv">CVV:</label>
     <input type="text" id="cvv" name="cvv" class="form-control" placeholder="Enter CVV" required><br>
+    <input type="checkbox" id="savecard" name="savecard" class="form-check-input"><span>Save Payment Info</span>
     <div class="justify-content-center text-center m-3">
     <button type="submit" class="btn btn-primary">Pay Now</button>
     </div>
   </form>
 </div>
+<!-- End of Card Payment Form -->
 
 <%- include('../partial/footer.ejs') %>

@@ -23,6 +23,9 @@ const OrderSchema = new Schema({
     type: String,
     required: true,
   },
+  payment:{
+    type: String,
+  },
   orderDate: {
     type: Date,
     default: Date.now,

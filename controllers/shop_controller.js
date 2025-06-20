@@ -13,6 +13,7 @@ exports.getShop = (req, res) => {
       user: req.session.user,
       products: qproducts,
       errorMessage: req.flash("error"),
+      successMessage: req.flash("success")
     });
   });
 };
@@ -31,6 +32,7 @@ exports.getRedeem = (req, res) => {
       user: req.session.user,
       products: qproducts,
       errorMessage: req.flash("error"),
+      successMessage: req.flash("success")
     });
   });
 };
@@ -46,6 +48,7 @@ exports.getCoupon = (req, res) => {
       user: req.session.user,
       products: qproducts,
       errorMessage: req.flash("error"),
+      successMessage: req.flash("success")
     });
   });
 };
