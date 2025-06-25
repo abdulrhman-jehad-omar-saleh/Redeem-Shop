@@ -3,8 +3,17 @@ const User = require("../models/users");
 exports.getShop = (req, res) => {
   products.find({}).then((qproducts) => {
     const now = new Date();
-    qproducts = qproducts.filter((product) => 
-      product.endAt > now && product.startAt <= now && product.code.length > 0
+    qproducts = qproducts.filter((product) => {
+      // product.endAt > now && product.startAt <= now && product.code.length > 0
+      if(product.startAt <= now){
+        if(product.endAt === null){
+          return product.code.length >0;
+        }
+        else{
+          return product.endAt > now && product.code.length > 0;
+        }
+      }
+    }
     );
 
     res.render("shop/main", {
@@ -23,8 +32,17 @@ exports.getIndex = (req, res) => {
 exports.getRedeem = (req, res) => {
   products.find({ type: "redeem" }).then((qproducts) => {
     const now = new Date();
-    qproducts = qproducts.filter((product) => 
-      product.endAt > now && product.startAt <= now && product.code.length > 0
+    qproducts = qproducts.filter((product) => {
+      // product.endAt > now && product.startAt <= now && product.code.length > 0
+      if(product.startAt <= now){
+        if(product.endAt === null){
+          return product.code.length >0;
+        }
+        else{
+          return product.endAt > now && product.code.length > 0;
+        }
+      }
+    }
     );
     res.render("shop/main", {
       title: "Redeems",
@@ -39,8 +57,17 @@ exports.getRedeem = (req, res) => {
 exports.getCoupon = (req, res) => {
   products.find({ type: "coupon" }).then((qproducts) => {
     const now = new Date();
-    qproducts = qproducts.filter((product) => 
-      product.endAt > now && product.startAt <= now && product.code.length > 0
+    qproducts = qproducts.filter((product) => {
+      // product.endAt > now && product.startAt <= now && product.code.length > 0
+      if(product.startAt <= now){
+        if(product.endAt === null){
+          return product.code.length >0;
+        }
+        else{
+          return product.endAt > now && product.code.length > 0;
+        }
+      }
+    }
     );
     res.render("shop/main", {
       title: "Coupons",

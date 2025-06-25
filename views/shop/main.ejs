@@ -39,14 +39,14 @@ if(errorMessage && errorMessage.length > 0) { %>
         <strong>JOD </strong
         ><span class="badge bg-success"><%= product.price %></span>
       </p>
-      <% } else { %>
+      <% } else { %> <% if(product.endAt !== null){ %>
       <p class="card-text">
         <strong>claim before: </strong
         ><span class="badge bg-success"
           ><%= product.endAt.toLocaleString() %></span
         >
       </p>
-      <% } %>
+      <%}%> <% } %>
     </div>
     <div class="card-footer text-muted">
       <% if(!isAuth) { %>
