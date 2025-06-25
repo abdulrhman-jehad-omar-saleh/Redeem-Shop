@@ -51,9 +51,9 @@ app.listen(8000, () => {
       ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
       qproducts.filter((product) => {
         if ( // check if product have no end date and Not have code and is 90 days old
-          product.endAt === null &&
-          product.code.length === 0 &&
-          product.startAt.toDateString() === ninetyDaysAgo.toDateString()
+          product.endAt === null ||
+          (product.code.length === 0 &&
+          product.startAt.toDateString() === ninetyDaysAgo.toDateString())
         ) {
           products
             .deleteOne({ _id: product._id })
