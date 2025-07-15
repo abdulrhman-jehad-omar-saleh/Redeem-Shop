@@ -18,9 +18,9 @@ if(errorMessage && errorMessage.length > 0) { %>
   No products available.
 </div>
 <% } else { %>
-<div class="card-columns w-75 w-md-50 w-lg-50 m-auto">
+<div class="card-columns m-auto">
   <% for(let product of products) { %>
-  <div class="card shadow m-3 alert-info">
+  <div class="card shadow alert-info">
     <div class="card-header">
       <details>
         <summary><%= product.title %></summary>

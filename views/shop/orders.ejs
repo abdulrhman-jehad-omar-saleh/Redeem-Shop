@@ -11,7 +11,7 @@
 <% if (orders.length === 0) { %>
   <p>You haven't placed any orders yet. <a href="/shop/main">Start shopping!</a></p>
 <% } else { %>
-  <div class="card-columns w-75 w-md-50 w-lg-50 m-auto">
+  <div class="card-columns m-auto">
     <% orders.forEach(order => { %>
       <% if (order.productId !== null) { %>
       <div class="card shadow m-3 alert-info">
