@@ -25,6 +25,10 @@ const UserSchema = new Schema({
           ref: "products",
           required: true,
         },
+        qty:{
+          type: Number,
+          default: 1
+        },
         default: [],
       },
     ],

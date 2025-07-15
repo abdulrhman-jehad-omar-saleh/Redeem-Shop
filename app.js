@@ -45,29 +45,34 @@ app.listen(8000, () => {
   console.log("Server is running on port 8000 successfully!");
   products
     .find({})
-    // find all products to clean old products 
+    // find all products to clean old products
     .then((qproducts) => {
       const ninetyDaysAgo = new Date();
       ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
       qproducts.filter((product) => {
-        if ( // check if product have no end date and Not have code and is 90 days old
-          product.endAt === null ||
-          (product.code.length === 0 &&
-          product.startAt.toDateString() === ninetyDaysAgo.toDateString())
-        ) {
-          products
-            .deleteOne({ _id: product._id })
-            .then(() => {
-              console.log(`Deleted product with ID: ${product._id}`);
-            })
-            .catch((err) => {
-              console.error(
-                `Error deleting product with ID ${product._id}:`,
-                err
-              );
-            });
-        } else { // if product is not 90 days old or have code or have end date
-          if (product.endAt.toDateString() < ninetyDaysAgo.toDateString()) { // if product have end date and is older than 90 days
+        if (product.endAt === null) {
+          // check if product have no end date
+          if (
+            product.code.length === 0 &&
+            product.startAt.toDateString() === ninetyDaysAgo.toDateString()
+          ) {
+            //and Not have code and is 90 days old
+            products
+              .deleteOne({ _id: product._id })
+              .then(() => {
+                console.log(`Deleted product with ID: ${product._id}`);
+              })
+              .catch((err) => {
+                console.error(
+                  `Error deleting product with ID ${product._id}:`,
+                  err
+                );
+              });
+          }
+        } else {
+          // if product is not 90 days old or have code or have end date
+          if (product.endAt.toDateString() < ninetyDaysAgo.toDateString()) {
+            // if product have end date and is older than 90 days
             products
               .deleteOne({ _id: product._id })
               .then(() => {

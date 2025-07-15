@@ -13,8 +13,16 @@ exports.getCart = async (req, res) => {
     // Get user with populated cart products
     const user = await User.findById(userId).populate("cart.productId");
 
+    // const cartProducts = user
+    //   ? user.cart.map((item) => item.productId).filter(Boolean)
+    //   : [];
     const cartProducts = user
-      ? user.cart.map((item) => item.productId).filter(Boolean)
+      ? user.cart
+          .map((item) => ({
+            product: item.productId,
+            qty: item.qty,
+          }))
+          .filter((item) => item.product && item.qty)
       : [];
 
     res.render("shop/cart", {
@@ -31,6 +39,7 @@ exports.getCart = async (req, res) => {
     res.redirect("/shop/main");
   }
 };
+
 exports.getAddToCart = (req, res) => {
   if (!req.session.isAuth) {
     req.flash("error", "You must be logged in to add items to your cart.");
@@ -50,12 +59,36 @@ exports.getAddToCart = (req, res) => {
           req.flash("error", "Product not found.");
           return res.redirect("/shop/main");
         }
-        foundUser.cart.push({ productId: product._id });
-        return foundUser.save().then(() => {
-          req.session.user = foundUser; // Update session user
-          req.flash("success", "Product added to cart successfully.");
-          res.redirect("/shop/main");
-        });
+        if (!product.code || product.code.length === 0) {
+          req.flash("error", "Product is out of stock.");
+        } else {
+          // Check if product already exists in cart
+          if (
+            foundUser.cart.some(
+              (item) => item.productId.toString() === product._id.toString()
+            )
+          ) {
+            foundUser.cart = foundUser.cart.map((item) => {
+              if (item.productId.toString() === product._id.toString()) {
+                if (product.code.length < item.qty + 1) {
+                  req.flash("error", "Not enough stock available.");
+                  return item; // Do not increment if not enough stock
+                }
+            req.flash("success", "Product added to cart successfully.");
+                item.qty += 1; // Increment quantity if product already in cart
+              }
+              return item;
+            });
+          } else {
+            // Add new product to cart
+            foundUser.cart.push({ productId: product._id });
+            req.flash("success", "Product added to cart successfully.");
+          }
+          return foundUser.save().then(() => {
+            req.session.user = foundUser; // Update session user
+            res.redirect("/shop/main");
+          });
+        }
       });
     })
     .catch((err) => {
@@ -84,10 +117,29 @@ exports.getBuyNow = (req, res) => {
         req.flash("error", "Product not found.");
         return res.redirect("/shop/main");
       }
-      foundUser.cart.push({ productId: product._id });
+      // Check if product already exists in cart
+      if (
+        foundUser.cart.some(
+          (item) => item.productId.toString() === product._id.toString()
+        )
+      ) {
+        foundUser.cart = foundUser.cart.map((item) => {
+          if (item.productId.toString() === product._id.toString()) {
+            if (product.code.length < item.qty + 1) {
+              req.flash("error", "Not enough stock available.");
+              return item; // Do not increment if not enough stock
+            }    
+            req.flash("success", "one more product added to cart successfully.");
+            item.qty += 1; // Increment quantity if product already in cart
+          }
+          return item;
+        });
+      } else {
+        foundUser.cart.push({ productId: product._id });
+        req.flash("success", "Checkout.");
+      }
       return foundUser.save().then(() => {
         req.session.user = foundUser; // Update session user
-        req.flash("success", "Checkout.");
         res.redirect("/shop/cart");
       });
     });
@@ -96,74 +148,97 @@ exports.getBuyNow = (req, res) => {
 exports.postRemoveFromCart = (req, res) => {
   const productId = req.params.id;
   const user = req.session.user;
+  // const success = "";
   User.findById(user._id).then((foundUser) => {
     if (!foundUser) {
       req.flash("error", "User not found.");
       return res.redirect("/shop/cart");
     }
-    foundUser.cart = foundUser.cart.filter(
-      (item) => item.productId.toString() !== productId
-    );
+    if (
+      foundUser.cart.some((item) => {
+        if (item.productId.toString() === productId && item.qty === 1) {
+          return true; // If the product is not in the cart or its quantity is 1, remove it
+        }
+      })
+    ) {
+      foundUser.cart = foundUser.cart.filter(
+        (item) => item.productId.toString() !== productId
+      );
+      req.flash("success", "Product removed from cart successfully.");
+    } else {
+      foundUser.cart = foundUser.cart.map((item) => {
+        if (item.productId.toString() === productId) {
+          item.qty -= 1; // Decrement quantity if product exists in cart
+        }
+        return item;
+      });
+    }
     return foundUser.save().then(() => {
       req.session.user = foundUser; // Update session user
-      req.flash("success", "Product removed from cart successfully.");
       res.redirect("/shop/cart");
     });
   });
 };
-const mongoose = require('mongoose');
+
+const mongoose = require("mongoose");
 exports.postCheckout = async (req, res) => {
   try {
     if (!req.session.isAuth) {
       req.flash("error", "You must be logged in to checkout.");
       return res.redirect("/shop/main");
     }
-    String.prototype.isNumber = function(){return /^\d+$/.test(this);}
-    if(!req.body.cardnumber.isNumber() || req.body.cardnumber.length < 16 || !req.body.expiredate.includes('/')){
-      req.flash("error","Invalid Card Number");
+    String.prototype.isNumber = function () {
+      return /^\d+$/.test(this);
+    };
+    if (
+      !req.body.cardnumber.isNumber() ||
+      req.body.cardnumber.length < 16 ||
+      !req.body.expiredate.includes("/")
+    ) {
+      req.flash("error", "Invalid Card Number");
       return res.redirect("/shop/cart");
     }
     const userId = req.session.user._id;
-    
+
     const foundUser = await User.findById(userId);
     if (!foundUser) {
       req.flash("error", "User not found.");
       return res.redirect("/shop/cart");
     }
-    
+
     if (foundUser.cart.length === 0) {
       req.flash("error", "Your cart is empty.");
       return res.redirect("/shop/cart");
     }
-    
+
     // Check stock availability first (before making any changes)
     for (const cartItem of foundUser.cart) {
       const product = await products.findById(cartItem.productId);
-      
+
       if (!product) {
         req.flash("error", "One or more products not found.");
         return res.redirect("/shop/cart");
       }
-      
+
       if (!product.code || product.code.length === 0) {
         req.flash("error", `Product "${product.name}" is out of stock.`);
         return res.redirect("/shop/cart");
       }
     }
-    
+
     // If all products are available, process the orders
     const orders = [];
-    
+
     for (const cartItem of foundUser.cart) {
       const product = await products.findById(cartItem.productId);
-      
+
       // Remove one code from product
       const code = product.code.pop();
-      if(product.code.length === 0) {
+      if (product.code.length === 0) {
         product.code = []; // Ensure code is an empty array if no codes left
       }
       await product.save();
-      
+
       // Create order
       const order = new Order({
         userId: foundUser._id,
@@ -172,21 +247,20 @@ exports.postCheckout = async (req, res) => {
         productPrice: product.price,
         code: code,
       });
-      
+
       const savedOrder = await order.save();
       orders.push(savedOrder);
     }
-    
+
     // Clear cart after all orders are successful
     foundUser.cart = [];
     await foundUser.save();
-    
+
     // Update session
     req.session.user.cart = [];
-    
+
     req.flash("success", `${orders.length} order(s) placed successfully.`);
     res.redirect("/shop/cart/orders");
-    
   } catch (err) {
     console.error(err);
     req.flash("error", "An error occurred during checkout.");

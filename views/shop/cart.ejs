@@ -27,19 +27,27 @@ if(errorMessage && errorMessage.length > 0) { %>
   <tbody class="alert-info">
     <% cart.forEach(item => { %>
     <tr>
-      <td><%= item.title %></td>
+      <td><%= item.product.title %></td>
       <td>
-        <% if(item.type === 'redeem') { %>
-        <%= item.price.toFixed(2) %> JOD
+        <% if(item.product.type === 'redeem') { %>
+        <%= item.product.price.toFixed(2) %> JOD
         <% } else { %>
           <span class="badge bg-muted">Coupon</span>
         <% } %>
       </td>
         
-      <% totalPrice += item.price; %>
+      <% totalPrice += item.product.price*item.qty; %>
       <td>
-        <form action="/shop/cart/remove/<%= item._id %>" method="POST">
-          <button type="submit" class="btn btn-danger">Remove</button>
+        <form action="/shop/cart/remove/<%= item.product._id %>" method="POST" style="display:inline;">
+          <% if(item.qty === 1) { %>
+          <button type="submit" class="fa-solid fa-trash btn btn-muted"></button>
+          <% } else { %>
+          <button type="submit" class="fa-solid fa-minus btn btn-muted"></button>
+          <% } %>
+        </form>
+        <span style="background-color: rgba(127, 142, 208, 0.396); padding: 10px;"> <%= item.qty %></span>
+        <form action="/shop/buy-now/<%= item.product._id %>" style=" display: inline;" method="get">
+          <button type="submit" class="fa-solid fa-plus btn"></button>
         </form>
       </td>
     </tr>
