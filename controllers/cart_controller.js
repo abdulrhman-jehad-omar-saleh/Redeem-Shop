@@ -190,14 +190,19 @@ exports.postCheckout = async (req, res) => {
     String.prototype.isNumber = function () {
       return /^\d+$/.test(this);
     };
-    if (
-      !req.body.cardnumber.isNumber() ||
-      req.body.cardnumber.length < 16 ||
-      !req.body.expiredate.includes("/")
-    ) {
-      req.flash("error", "Invalid Card Number");
-      return res.redirect("/shop/cart");
+    // console.log("req.body:", req.body);
+    if(!req.session.user.payment){
+      if (
+        !req.body.cardnumber.isNumber() ||
+        req.body.cardnumber.length < 16 ||
+        !req.body.expirydate.includes("/")
+      ) {
+        req.flash("error", "Invalid Card Number");
+        return res.redirect("/shop/cart");
+      }
     }
+
+    // proceed with checkout
     const userId = req.session.user._id;
 
     const foundUser = await User.findById(userId);
@@ -222,6 +227,10 @@ exports.postCheckout = async (req, res) => {
 
       if (!product.code || product.code.length === 0) {
         req.flash("error", `Product "${product.name}" is out of stock.`);
+        return res.redirect("/shop/cart");
+      }
+      if(product.code.length < cartItem.qty){
+        req.flash("error", `Not enough stock for product "${product.name}".`);
         return res.redirect("/shop/cart");
       }
     }
@@ -251,7 +260,15 @@ exports.postCheckout = async (req, res) => {
       const savedOrder = await order.save();
       orders.push(savedOrder);
     }
-
+    // Save Card Details
+    if(req.body.savecard){
+      foundUser.payment = {
+        card_no: req.body.cardnumber,
+        expiry_date: req.body.expirydate,
+        cvv: req.body.cvv,
+      };
+      req.session.user.payment = foundUser.payment; // Update session payment details
+    }
     // Clear cart after all orders are successful
     foundUser.cart = [];
     await foundUser.save();

@@ -18,7 +18,7 @@
             <% if (title === 'Cart' || title === 'Orders') { %>
                 border-bottom text-white bg-dark
             <%} %>"
-            " href="/shop/cart"> Cart
+            " href="/shop/cart"><i class="fa-duotone fa-solid fa-cart-shopping"></i>
             <% if (user.cart.length > 0) { %>
                 <span class="badge badge-pill badge-danger ml-1"><%= user.cart.length %></span>
             <% } %>
@@ -30,10 +30,10 @@
         <li class="nav-item navbar-collapse justify-content-end">
             
         <span class="navbar-text text-secondery mr-3"><%= user.name %></span>
-            <a class="nav-link bg-info text-dark shadow rounded" href="/logout">Logout</a>
+            <a class="nav-link bg-info text-dark shadow rounded" href="/logout">Logout <i class="fa-solid fa-user-slash"></i></a>
         </li>
         <% } else { %>
-        <li class="nav-item navbar-collapse justify-content-end"><a class="nav-link bg-info text-dark shadow rounded" href="/login">Login</a></li>
+        <li class="nav-item navbar-collapse justify-content-end"><a class="nav-link bg-info text-dark shadow rounded" href="/login">Login <i class="fa-solid fa-right-to-bracket"></i></a></li>
         <% } %>
     </ul>
 </nav>

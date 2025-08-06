@@ -54,7 +54,7 @@ app.listen(8000, () => {
           // check if product have no end date
           if (
             product.code.length === 0 &&
-            product.startAt.toDateString() === ninetyDaysAgo.toDateString()
+            product.startAt === ninetyDaysAgo
           ) {
             //and Not have code and is 90 days old
             products
@@ -71,7 +71,7 @@ app.listen(8000, () => {
           }
         } else {
           // if product is not 90 days old or have code or have end date
-          if (product.endAt.toDateString() < ninetyDaysAgo.toDateString()) {
+          if (product.endAt < ninetyDaysAgo) {
             // if product have end date and is older than 90 days
             products
               .deleteOne({ _id: product._id })

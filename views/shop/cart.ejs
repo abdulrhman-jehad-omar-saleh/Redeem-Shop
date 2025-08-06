@@ -60,19 +60,38 @@ if(errorMessage && errorMessage.length > 0) { %>
     </tr>
     <tr class="alert-success text-dark">
       <td  class="text-right text-center">Total:</td>
-      <td colspan="2" class="text-left">$<%= totalPrice %></td>
+      <td colspan="2" class="text-left">$<%= totalPrice.toFixed(2) %></td>
     </tr>
+    <% if(user.payment){ %>
+      <tr class="alert-success text-dark">
+        <td class="text-right text-center">Pay with card end in:</td>
+        <td class="text-left">xxxxxxxxx<%= user.payment.card_no.slice(-4) %></td>
+        <td class="text-left">
+          <button type="button" class="btn btn-primary" onclick="showPaymentForm()">Change</button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-center">
+          <form action="/shop/cart/checkout" method="POST">
+            <input type="hidden" name="totalPrice" value="<%= totalPrice %>">
+            <button type="submit" class="btn btn-success" id="checkoutButton">Pay Now</button>
+          </form>
+      </td>
+      </tr>
+    <% } else {%>
     <tr>
       <td colspan="3" class="text-center">
-          <button type="submit" class="btn btn-success" onclick="showPaymentForm()">Checkout</button>
-          <script>
-            function showPaymentForm() {
-            document.getElementById('paymentForm').hidden = false;
-            }
-          </script>
-        </form>
+          <button type="submit" class="btn btn-success" onclick="showPaymentForm()" id="checkoutButton">Checkout</button>
       </td>
     </tr>
+    <% } %>
+    <script>
+      function showPaymentForm() {
+        document.getElementById('paymentForm').hidden = false;
+        document.getElementById('paymentForm').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('checkoutButton').hidden = true;
+      }
+    </script>
   </tfoot>
   <% } else { %>
   <tr class="alert-info">
@@ -94,6 +113,13 @@ if(errorMessage && errorMessage.length > 0) { %>
     <input type="checkbox" id="savecard" name="savecard" class="form-check-input"><span>Save Payment Info</span>
     <div class="justify-content-center text-center m-3">
     <button type="submit" class="btn btn-primary">Pay Now</button>
+    <button class="btn btn-secondary" onclick="cancelPayment()"> Cancel </button>
+    <script>
+      function cancelPayment() {
+        document.getElementById('paymentForm').hidden = true;
+        document.getElementById('checkoutButton').hidden = false;
+      }
+    </script>
     </div>
   </form>
 </div>
